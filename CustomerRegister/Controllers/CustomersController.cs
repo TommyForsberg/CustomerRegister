@@ -19,25 +19,26 @@ namespace CustomerRegister
         {
             this.databaseContext = databaseContext;
         }
-        // GET: api/values
+       
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAllCustomers()
         {
             return Ok(databaseContext.Customers);
+
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/values
+      
+        // POST Customer to database.
         [HttpPost]
         public IActionResult Post(Customer customer)
         {
-            return Ok(customer);
+            if (!ModelState.IsValid)
+                return BadRequest(customer);
+
+                databaseContext.Add(customer);
+            databaseContext.SaveChanges();
+            return Ok(databaseContext.Customers);
         }
 
         // PUT api/values/5

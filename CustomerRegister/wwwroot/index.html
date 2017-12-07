@@ -7,13 +7,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 </head>
 <body>
-    <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="container">
-        <h1 class="display-3">Kundregister</h1>
-
+        <h2 class="display-3">Kundregister</h2>
         <div class="row">
             <div class="col-6">
-
+               
             </div>
             <div class="col-6" id="customerForm">
                 <h3>Lägg till kund:</h3>
@@ -41,9 +39,17 @@
                     </select>
                 </div>
                 <button id="addCustomer">Lägg till</button>
+                <button disabled id="updateCustomer">Uppdatera</button>
             </div>
         </div>
-        
+        <div class="row">
+            <div class="col">
+                <h4>Befintliga kunder</h4>
+                <table class="table" id="customersTable">
+                    <tr><th>ID</th><th>Förnamn</th><th>Efternamn</th><th>Email</th><th>Kön</th><th>Ålder</th><th></th></tr>
+                </table>
+            </div>
+        </div>
     </div>
 
   <script src="scripts/script.js"></script>

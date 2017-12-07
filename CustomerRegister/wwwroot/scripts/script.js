@@ -116,19 +116,34 @@ $(document).on('click', '.removeCustomer', function () {
 
 });
 function appendTable(result) {
-    $("#customersTable").html('<tr><th>ID</th><th>Förnamn</th><th>Efternamn</th><th>Email</th><th>Kön</th><th>Ålder</th><th></th></tr>');
+    $("#customersTable").html('<tr><th>ID</th><th>Förnamn</th><th>Efternamn</th><th>Email</th><th>Kön</th><th>Ålder</th><th></th><th></th></tr>');
     $.each(result, function (i, item) {
 
-        $("#customersTable").append(
+        if (item.updated) {
+            $("#customersTable").append(
 
-            '<tr><td>' + item.id + '</td><td>' + item.firstName + '</td>' +
-            '<td>' + item.lastName + '</td>' +
-            '<td>' + item.email + '</td>' +
-            '<td>' + item.gender + '</td>' +
-            '<td>' + item.age + '</td>' +
-            '<td><button class="removeCustomer btn btn-danger" id=' + item.id + '>Ta bort</button></td>' +
-            '<td><button class="editCustomer btn btn-primary" id=' + item.id + '>Redigera</button></td></tr>'
-        );
+                '<tr class="table-info"><td>' + item.id + '</td><td>' + item.firstName + '</td>' +
+                '<td>' + item.lastName + '</td>' +
+                '<td>' + item.email + '</td>' +
+                '<td>' + item.gender + '</td>' +
+                '<td>' + item.age + '</td>' +
+                '<td><button class="removeCustomer btn btn-danger" id=' + item.id + '>Ta bort</button></td>' +
+                '<td><button class="editCustomer btn btn-primary" id=' + item.id + '>Redigera</button></td></tr>'
+            );
+        }
+        else {
+            $("#customersTable").append(
+
+                '<tr><td>' + item.id + '</td><td>' + item.firstName + '</td>' +
+                '<td>' + item.lastName + '</td>' +
+                '<td>' + item.email + '</td>' +
+                '<td>' + item.gender + '</td>' +
+                '<td>' + item.age + '</td>' +
+                '<td><button class="removeCustomer btn btn-danger" id=' + item.id + '>Ta bort</button></td>' +
+                '<td><button class="editCustomer btn btn-primary" id=' + item.id + '>Redigera</button></td></tr>'
+            );
+        }
+       
     });
 }
 function editCustomer(customer) {

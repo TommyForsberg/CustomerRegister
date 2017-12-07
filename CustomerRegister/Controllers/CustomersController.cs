@@ -51,7 +51,7 @@ namespace CustomerRegister
         {
             if (!ModelState.IsValid)
                 return BadRequest(customer);
-
+            customer.Updated = true;
             databaseContext.Update(customer);
             databaseContext.SaveChanges();
             return Ok(databaseContext.Customers);

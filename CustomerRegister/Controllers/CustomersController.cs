@@ -67,6 +67,14 @@ namespace CustomerRegister
             return Ok(databaseContext.Customers);
         }
 
+        [HttpDelete("deleteall")]
+        public IActionResult DeleteAll()
+        {
+            databaseContext.RemoveRange(databaseContext.Customers);
+            databaseContext.SaveChanges();
+            return Ok(databaseContext.Customers);
+        }
+
         [HttpPost("seed")]
         public IActionResult SeedDatabase()
         {

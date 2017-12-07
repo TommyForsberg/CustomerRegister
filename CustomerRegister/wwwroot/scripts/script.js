@@ -86,6 +86,7 @@ $(document).on('click', '.updateCustomer', function () {
 
 //Removes a customer by id.
 $(document).on('click', '.removeCustomer', function () {
+    
     $.ajax({
         url: '/api/Customers',
         method: 'DELETE',
@@ -96,6 +97,7 @@ $(document).on('click', '.removeCustomer', function () {
         .done(function (result) {
             $("#customersTable").html('');
             appendTable(result);
+            
         })
         .fail(function (xhr, status, error) {
             alert("Fail");
@@ -104,15 +106,27 @@ $(document).on('click', '.removeCustomer', function () {
 });
 //Populates db.
 $(document).on('click', '#seedButton', function () {
+    $("#load").addClass('loader');
     $.ajax({
         url: '/api/Customers/seed',
         method: 'Post',
     })
         .done(function (result) {
             appendTable(result);
-
+            $("#load").removeClass('loader');
         })
+});
 
+$(document).on('click', '#deleteAllButton', function () {
+    $("#load").addClass('loader');
+    $.ajax({
+        url: '/api/Customers/deleteall',
+        method: 'DELETE',
+    })
+        .done(function (result) {
+            appendTable(result);
+            $("#load").removeClass('loader');
+        })
 });
 
 //function for constructing table of all customers from database.

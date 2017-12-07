@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CustomerRegister.Models.Entities;
@@ -63,6 +64,27 @@ namespace CustomerRegister
         {
             databaseContext.Remove(databaseContext.Customers.Find(id));
             databaseContext.SaveChanges();
+            return Ok(databaseContext.Customers);
+        }
+
+        [HttpPost("seed")]
+        public IActionResult SeedDatabase()
+        {
+            databaseContext.Customers.RemoveRange(databaseContext.Customers);
+            var file = Path.Combine(Environment.CurrentDirectory, "data", "PersonExtra.csv");
+            using (var streamReader = System.IO.File.OpenText(file))
+            {
+
+                while (!streamReader.EndOfStream)
+                {
+                    var line = streamReader.ReadLine();
+                    var data = line.Split(new[] { ',' });
+                    var customer = new Customer() { FirstName = data[1], LastName = data[2], Email = data[3], Gender = data[4], Age = int.Parse(data[5]) };
+                    databaseContext.Add(customer);
+                }
+
+                databaseContext.SaveChanges();
+            }
             return Ok(databaseContext.Customers);
         }
     }

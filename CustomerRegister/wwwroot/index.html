@@ -9,11 +9,8 @@
 <body>
     <div class="container">
         <h2 class="display-3">Kundregister</h2>
-        <div class="row">
-            <div class="col-6">
-               
-            </div>
-            <div class="col-6" id="customerForm">
+        <div class="row">         
+            <div class="col-sm-4" id="customerForm">
                 <h3>Lägg till/uppdatera kund:</h3>
                 <div class="form-group">
                     <label class="col-form-label">Förnamn</label>
@@ -39,14 +36,25 @@
                     </select>
                 </div>
                 <input type="number" class="form-control" name="Id" hidden>
-                <button id="addCustomer">Lägg till</button>
-                <button class="updateCustomer" disabled id="updateCustomer">Uppdatera</button>
+                <button class="btn btn-success" id="addCustomer">Lägg till</button>
+                <button class="updateCustomer btn btn-warning" disabled id="updateCustomer">Uppdatera</button>
             </div>
-        </div>
-        <div class="row">
+            <div class="col pt-3">
+                <div class="p-3">
+                    <div class="jumbotron">
+                        <h4>Välkommen!</h4>
+                        <p>För att lägga till en ny kund så används knappen <span class="badge badge-success">Lägg till</span> . <span class="badge badge-warning">Uppdatera</span> aktiveras när man väljer att <span class="badge badge-primary">Redigera</span> en kund. En uppdaterad kund får en <span class="badge badge-info">blå</span> rad i tabellen medan en nytillagd blir vit. För att populera databasen från textfil kan du använda knappen nedan.</p>
+                    <br />
+                        <button id="seedButton" class="btn btn-outline-dark btn-lg">Seed</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        <br />
+        <div class="row p-3">
             <div class="col">
-                <h4>Befintliga kunder</h4>
-                <table class="table table-sm" id="customersTable">
+                <h2>Befintliga kunder</h2>
+                <table class="table" id="customersTable">
                     <tr><th>ID</th><th>Förnamn</th><th>Efternamn</th><th>Email</th><th>Kön</th><th>Ålder</th><th></th></tr>
                 </table>
             </div>

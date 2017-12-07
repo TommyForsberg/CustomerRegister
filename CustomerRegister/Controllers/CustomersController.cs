@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CustomerRegister.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,11 +12,18 @@ namespace CustomerRegister
     [Route("api/[controller]")]
     public class CustomersController : Controller
     {
+
+        private DBContext databaseContext;
+
+        public CustomersController(DBContext databaseContext)
+        {
+            this.databaseContext = databaseContext;
+        }
         // GET: api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(databaseContext.Customers);
         }
 
         // GET api/values/5
@@ -27,8 +35,9 @@ namespace CustomerRegister
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post(Customer customer)
         {
+            return Ok(customer);
         }
 
         // PUT api/values/5

@@ -49,15 +49,21 @@ namespace CustomerRegister
         [HttpPut]
         public IActionResult Update(Customer customer)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(customer);
+
             databaseContext.Update(customer);
             databaseContext.SaveChanges();
             return Ok(databaseContext.Customers);
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+
+        [HttpDelete]
+        public IActionResult RemoveCustomer(int id)
         {
+            databaseContext.Remove(databaseContext.Customers.Find(id));
+            databaseContext.SaveChanges();
+            return Ok(databaseContext.Customers);
         }
     }
 }

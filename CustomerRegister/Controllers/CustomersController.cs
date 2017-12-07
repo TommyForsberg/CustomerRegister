@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CustomerRegister.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,12 +14,13 @@ namespace CustomerRegister
     [Route("api/[controller]")]
     public class CustomersController : Controller
     {
-
+        private readonly ILogger<CustomersController> logger;
         private DBContext databaseContext;
 
-        public CustomersController(DBContext databaseContext)
+        public CustomersController(DBContext databaseContext, ILogger<CustomersController> logger)
         {
             this.databaseContext = databaseContext;
+            this.logger = logger;
         }
        
         [HttpGet]
@@ -37,13 +39,15 @@ namespace CustomerRegister
 
         // POST Customer to database.
         [HttpPost]
-        public IActionResult Post(Customer customer)
+        public IActionResult AddCustomer(Customer customer)
         {
             if (!ModelState.IsValid)
                 return BadRequest(customer);
 
-                databaseContext.Add(customer);
+            
+            databaseContext.Add(customer);
             databaseContext.SaveChanges();
+            logger.LogInformation("A customer was added");
             return Ok(databaseContext.Customers);
         }
 

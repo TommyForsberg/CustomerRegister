@@ -1,6 +1,5 @@
 ﻿//Onload. 
 $(function () {
-    $("#updateCustomer").removeAttr('disabled');
     $.ajax({
         url: '/api/Customers',
         method: 'GET'
@@ -14,7 +13,6 @@ $(function () {
 
             alert(`Fail!`)
             console.log("Error", xhr, status, error);
-
         })
 });
 
@@ -51,6 +49,42 @@ $("#addCustomer").click(function () {
 
         })
 });
+//Get customer to edit.
+$(document).on('click', '.editCustomer', function () {
+    
+    $.ajax({
+        url: '/api/Customers/GetCustomer',
+        method: 'GET',
+        data: {
+            "Id": $(this).attr("id"),
+        }
+    })
+        .done(function (result) {
+            editCustomer(result);
+        })
+
+});
+
+$(document).on('click', '.updateCustomer', function () {
+   
+    $.ajax({
+        url: '/api/customers',
+        method: 'PUT',
+        data: {
+            "Id": $("#customerForm [name=Id]").val(),
+            "FirstName": $("#customerForm [name=FirstName]").val(),
+            "LastName": $("#customerForm [name=LastName]").val(),
+            "Email": $("#customerForm [name=Email]").val(),
+            "Gender": $("#customerForm [name=Gender]").val(),
+            "Age": $("#customerForm [name=Age]").val(),
+          
+        }
+    })
+        .done(function (result) {
+            appendTable(result);
+        })
+
+});
 
 function appendTable(result) {
     $("#customersTable").html('<tr><th>ID</th><th>Förnamn</th><th>Efternamn</th><th>Email</th><th>Kön</th><th>Ålder</th><th></th></tr>');
@@ -66,6 +100,17 @@ function appendTable(result) {
             '<td><button class="removeCustomer btn btn-danger" id=' + item.id + '>Ta bort</button></td>' +
             '<td><button class="editCustomer btn btn-primary" id=' + item.id + '>Redigera</button></td></tr>'
         );
-        console.log("Success!", item)
     });
+}
+function editCustomer(customer) {
+    console.log(customer);
+    $("#customerForm [name=FirstName]").val(customer.firstName);
+    $("#customerForm [name=LastName]").val(customer.lastName);
+    $("#customerForm [name=Email]").val(customer.email);
+    $("#customerForm [name=Gender]").val(customer.gender);
+    $("#customerForm [name=Age]").val(customer.age);
+    $("#customerForm [name=Id]").val(customer.id);
+    
+    $("#updateCustomer")
+        .removeAttr('disabled');   
 }

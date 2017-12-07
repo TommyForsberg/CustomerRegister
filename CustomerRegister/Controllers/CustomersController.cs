@@ -27,8 +27,13 @@ namespace CustomerRegister
 
         }
 
+        [HttpGet("GetCustomer")]
+        public IActionResult GetCustomer(int id)
+        {
 
-      
+            return Ok(databaseContext.Customers.Find(id));
+        }
+
         // POST Customer to database.
         [HttpPost]
         public IActionResult Post(Customer customer)
@@ -41,10 +46,12 @@ namespace CustomerRegister
             return Ok(databaseContext.Customers);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut]
+        public IActionResult Update(Customer customer)
         {
+            databaseContext.Update(customer);
+            databaseContext.SaveChanges();
+            return Ok(databaseContext.Customers);
         }
 
         // DELETE api/values/5

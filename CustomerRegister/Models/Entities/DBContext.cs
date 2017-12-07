@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -7,7 +6,6 @@ namespace CustomerRegister.Models.Entities
 {
     public partial class DBContext : DbContext
     {
-        
         public virtual DbSet<Customer> Customers { get; set; }
 
         public DBContext(DbContextOptions<DBContext> context) : base(context)
@@ -16,11 +14,10 @@ namespace CustomerRegister.Models.Entities
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+
             modelBuilder.Entity<Customer>(entity =>
             {
                 entity.ToTable("customer");
-
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasMaxLength(50);

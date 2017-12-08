@@ -78,8 +78,14 @@ namespace CustomerRegister
             databaseContext.SaveChanges();
             return Ok(databaseContext.Customers);
         }
-
-        [HttpPost("seed")]
+        [HttpGet("seelogs")]
+        public IActionResult SeeLogs()
+        {
+            var file = Path.Combine(Environment.CurrentDirectory, "logs", "log.txt");
+            var lines = System.IO.File.ReadAllLines(file);
+            return Ok(lines);
+        }
+        [HttpGet("SeedDatabase")]
         public IActionResult SeedDatabase()
         {
             databaseContext.Customers.RemoveRange(databaseContext.Customers);

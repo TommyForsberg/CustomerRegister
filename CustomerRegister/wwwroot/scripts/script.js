@@ -108,12 +108,16 @@ $(document).on('click', '.removeCustomer', function () {
 $(document).on('click', '#seedButton', function () {
     $("#load").addClass('loader');
     $.ajax({
-        url: '/api/Customers/seed',
-        method: 'Post',
+        url: '/api/Customers/SeedDatabase',
+        method: 'GET',
     })
         .done(function (result) {
             appendTable(result);
             $("#load").removeClass('loader');
+        })
+        .fail(function (xhr, status, error) {
+            alert("Fail");
+            console.log("Error", xhr, status, error);
         })
 });
 

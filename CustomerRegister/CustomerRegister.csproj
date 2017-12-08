@@ -19,4 +19,13 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\PersonExtra.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\PersonShort.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using CustomerRegister.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Targets;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,7 +24,7 @@ namespace CustomerRegister
             this.databaseContext = databaseContext;
             this.logger = logger;
         }
-       
+
         [HttpGet]
         public IActionResult GetAllCustomers()
         {
@@ -44,7 +46,7 @@ namespace CustomerRegister
             if (!ModelState.IsValid)
                 return BadRequest(customer);
 
-            
+
             databaseContext.Add(customer);
             databaseContext.SaveChanges();
             logger.LogInformation("A customer was added");
@@ -81,9 +83,13 @@ namespace CustomerRegister
         [HttpGet("seelogs")]
         public IActionResult SeeLogs()
         {
-            var file = Path.Combine(Environment.CurrentDirectory, "logs", "log.txt");
-            var lines = System.IO.File.ReadAllLines(file);
-            return Ok(lines);
+            var fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("ownFile-web");
+            // Need to set timestamp here if filename uses date. 
+            // For example - filename="${basedir}/logs/${shortdate}/trace.log"
+            var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            string fileName = fileTarget.FileName.Render(logEventInfo);
+           var log =  System.IO.File.ReadAllText(fileName);
+            return Ok(log);
         }
         [HttpGet("SeedDatabase")]
         public IActionResult SeedDatabase()

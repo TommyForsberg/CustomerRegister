@@ -48,8 +48,15 @@ namespace CustomerRegister
 
         [HttpGet("GetCustomer")]
         public IActionResult GetCustomer(int id)
-        {          
-            return Ok(databaseContext.Customers.Find(id));
+        {
+            var customer = Customers
+                .Where(o => o.Id.Equals(id))
+                .FirstOrDefault();
+
+            if(customer == null)
+                return NotFound();
+
+            return Ok(customer);         
         }
 
         // POST Customer to database.
@@ -82,6 +89,13 @@ namespace CustomerRegister
         [HttpDelete]
         public IActionResult RemoveCustomer(int id)
         {
+            var customer = Customers
+               .Where(o => o.Id.Equals(id))
+               .FirstOrDefault();
+
+            if (customer == null)
+                return NotFound(Customers);
+
             databaseContext.Remove(databaseContext.Customers.Find(id));
             databaseContext.SaveChanges();
             return Ok(Customers);
@@ -113,7 +127,7 @@ namespace CustomerRegister
         public IActionResult SeedDatabase()
         {
             databaseContext.Customers.RemoveRange(databaseContext.Customers);
-            var file = Path.Combine(Environment.CurrentDirectory, "data", "PersonExtra.csv");
+            var file = Path.Combine(Environment.CurrentDirectory, "data", "PersonShort.csv");
 
             if (!System.IO.File.Exists(file))
                 return NotFound();

@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <h2 class="display-3">Kundregister</h2>
-        <div class="row">         
+        <div class="row">
             <div class="col-sm-4" id="customerForm">
                 <h3>Lägg till/uppdatera kund:</h3>
                 <div class="form-group">
@@ -45,14 +45,15 @@
                     <div class="jumbotron">
                         <h4>Välkommen!</h4>
                         <p>För att lägga till en ny kund så används knappen <span class="badge badge-success">Lägg till</span> . <span class="badge badge-warning">Uppdatera</span> aktiveras när man väljer att <span class="badge badge-primary">Redigera</span> en kund. En uppdaterad kund får en <span class="badge badge-info">blå</span> rad i tabellen medan en nytillagd blir vit. För att populera databasen från textfil kan du använda knappen nedan.</p>
+                        <p>För att se loggar från sidan kan du nyttja API-metoden 'GetLogsByDate', till exempel <a href="http://customerregister20171207065956.azurewebsites.net/api/customers/getlogsbydate/2017-12-09">http://customerregister20171207065956.azurewebsites.net/api/customers/getlogsbydate/2017-12-09</a></p>
                         <br />
                         <button id="seedButton" class="btn btn-outline-dark btn-lg">Seed</button>
                         <button id="deleteAllButton" class="btn btn-outline-danger btn-lg">Töm databas</button>
-                   <div id="load" class="float-right"></div>
+                        <div id="load" class="float-right"></div>
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
         <br />
         <div class="row p-3">
             <div class="col">
@@ -63,7 +64,11 @@
             </div>
         </div>
     </div>
-
-  <script src="scripts/script.js"></script>
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted"> &copy; Tommy Forsberg 2017</span>
+        </div>
+    </footer>
+    <script src="scripts/script.js"></script>
 </body>
 </html>

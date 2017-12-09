@@ -19,6 +19,20 @@ namespace CustomerRegister
         private readonly ILogger<CustomersController> logger;
         private DBContext databaseContext;
 
+
+        /// <summary>
+        /// Wraps the list of customers from context for easy logging with every fetch.
+        /// </summary>
+        public List<Customer> Customers
+        {
+            get
+            {
+                logger.LogInformation("All customers were fetched from the database.");
+                return databaseContext.Customers.ToList();
+            }
+        }
+
+
         public CustomersController(DBContext databaseContext, ILogger<CustomersController> logger)
         {
             this.databaseContext = databaseContext;
@@ -28,14 +42,13 @@ namespace CustomerRegister
         [HttpGet]
         public IActionResult GetAllCustomers()
         {
-            return Ok(databaseContext.Customers);
+            return Ok(Customers);
 
         }
 
         [HttpGet("GetCustomer")]
         public IActionResult GetCustomer(int id)
-        {
-
+        {          
             return Ok(databaseContext.Customers.Find(id));
         }
 
@@ -46,31 +59,32 @@ namespace CustomerRegister
             if (!ModelState.IsValid)
                 return BadRequest(customer);
 
-
             databaseContext.Add(customer);
             databaseContext.SaveChanges();
-            logger.LogInformation("A customer was added");
-            return Ok(databaseContext.Customers);
+            logger.LogInformation("A customer with name: " +customer.FirstName + " " + customer.LastName + " was added.");
+            return Ok(Customers);
         }
 
+        //Update customer in database.
         [HttpPut]
         public IActionResult Update(Customer customer)
         {
             if (!ModelState.IsValid)
                 return BadRequest(customer);
+
             customer.Updated = true;
             databaseContext.Update(customer);
             databaseContext.SaveChanges();
-            return Ok(databaseContext.Customers);
+            logger.LogInformation("Customer with Id "+customer.Id + " was updated.");
+            return Ok(Customers);
         }
-
 
         [HttpDelete]
         public IActionResult RemoveCustomer(int id)
         {
             databaseContext.Remove(databaseContext.Customers.Find(id));
             databaseContext.SaveChanges();
-            return Ok(databaseContext.Customers);
+            return Ok(Customers);
         }
 
         [HttpDelete("deleteall")]
@@ -78,17 +92,21 @@ namespace CustomerRegister
         {
             databaseContext.RemoveRange(databaseContext.Customers);
             databaseContext.SaveChanges();
-            return Ok(databaseContext.Customers);
+            logger.LogInformation("All customers were deleted from the database.");
+
+            return Ok(Customers);
         }
-        [HttpGet("seelogs")]
-        public IActionResult SeeLogs()
+        [HttpGet("GetLogsByDate/{date}")]
+        public IActionResult GetLogsByDate(DateTime date)
         {
             var fileTarget = (FileTarget)LogManager.Configuration.FindTargetByName("ownFile-web");
-            // Need to set timestamp here if filename uses date. 
-            // For example - filename="${basedir}/logs/${shortdate}/trace.log"
-            var logEventInfo = new LogEventInfo { TimeStamp = DateTime.Now };
+            var logEventInfo = new LogEventInfo { TimeStamp = date };
             string fileName = fileTarget.FileName.Render(logEventInfo);
-           var log =  System.IO.File.ReadAllText(fileName);
+
+            if (!System.IO.File.Exists(fileName))
+                return NotFound();
+
+            var log = System.IO.File.ReadAllText(fileName);
             return Ok(log);
         }
         [HttpGet("SeedDatabase")]
@@ -96,6 +114,10 @@ namespace CustomerRegister
         {
             databaseContext.Customers.RemoveRange(databaseContext.Customers);
             var file = Path.Combine(Environment.CurrentDirectory, "data", "PersonExtra.csv");
+
+            if (!System.IO.File.Exists(file))
+                return NotFound();
+
             using (var streamReader = System.IO.File.OpenText(file))
             {
 
@@ -108,8 +130,9 @@ namespace CustomerRegister
                 }
 
                 databaseContext.SaveChanges();
+                logger.LogInformation("The database was seeded from textfile.");
             }
-            return Ok(databaseContext.Customers);
+            return Ok(Customers);
         }
     }
 }

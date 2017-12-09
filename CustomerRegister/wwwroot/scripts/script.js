@@ -1,4 +1,4 @@
-﻿//Onload. 
+﻿//Onload. Get all customers and show them on page.
 $(function () {
     $.ajax({
         url: '/api/Customers',
@@ -52,7 +52,6 @@ $(document).on('click', '.editCustomer', function () {
         })
 
         .fail(function (xhr, status, error) {
-
             alert("Fail");
             console.log("Error", xhr, status, error);
         })
@@ -104,6 +103,7 @@ $(document).on('click', '.removeCustomer', function () {
             console.log("Error", xhr, status, error);
         })
 });
+
 //Populates db.
 $(document).on('click', '#seedButton', function () {
     $("#load").addClass('loader');
@@ -120,7 +120,7 @@ $(document).on('click', '#seedButton', function () {
             console.log("Error", xhr, status, error);
         })
 });
-
+//Delete every customer from database.
 $(document).on('click', '#deleteAllButton', function () {
     $("#load").addClass('loader');
     $.ajax({
@@ -131,9 +131,13 @@ $(document).on('click', '#deleteAllButton', function () {
             appendTable(result);
             $("#load").removeClass('loader');
         })
+        .fail(function (xhr, status, error) {
+            alert("Fail");
+            console.log("Error", xhr, status, error);
+        })
 });
 
-//function for constructing table of all customers from database.
+//function for constructing table of customers.
 function appendTable(result) {
     $("#customersTable").html('<tr><th>ID</th><th>Förnamn</th><th>Efternamn</th><th>Email</th><th>Kön</th><th>Ålder</th><th></th><th></th></tr>');
     $.each(result, function (i, item) {

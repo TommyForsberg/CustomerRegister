@@ -8,6 +8,8 @@ namespace CustomerRegister.Models.Entities
     {
         public virtual DbSet<Customer> Customers { get; set; }
 
+
+
         public DBContext(DbContextOptions<DBContext> context) : base(context)
         {
 

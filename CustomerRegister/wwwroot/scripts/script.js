@@ -68,7 +68,9 @@ $(document).on('click', '.updateCustomer', function () {
             "LastName": $("#customerForm [name=LastName]").val(),
             "Email": $("#customerForm [name=Email]").val(),
             "Gender": $("#customerForm [name=Gender]").val(),
-            "Age": $("#customerForm [name=Age]").val(),         
+            "Age": $("#customerForm [name=Age]").val(),     
+            "Created": $("#customerForm [name=Created]").val(),         
+
         }
     })
         .done(function (result) {
@@ -139,7 +141,7 @@ $(document).on('click', '#deleteAllButton', function () {
 
 //function for constructing table of customers.
 function appendTable(result) {
-    $("#customersTable").html('<tr><th>ID</th><th>Förnamn</th><th>Efternamn</th><th>Email</th><th>Kön</th><th>Ålder</th><th></th><th></th></tr>');
+    $("#customersTable").html('<tr><th>ID</th><th>Förnamn</th><th>Efternamn</th><th>Email</th><th>Kön</th><th>Ålder</th><th>Skapad</th><th>Ändrad</th><th></th><th></th></tr>');
     $.each(result, function (i, item) {
 
         if (item.updated) {
@@ -149,6 +151,8 @@ function appendTable(result) {
                 '<td>' + item.email + '</td>' +
                 '<td>' + item.gender + '</td>' +
                 '<td>' + item.age + '</td>' +
+                '<td>' + item.created + '</td>' +
+                '<td>' + item.edited + '</td>' +
                 '<td><button class="removeCustomer btn btn-danger" id=' + item.id + '>Ta bort</button></td>' +
                 '<td><button class="editCustomer btn btn-primary" id=' + item.id + '>Redigera</button></td></tr>'
             );
@@ -160,6 +164,8 @@ function appendTable(result) {
                 '<td>' + item.email + '</td>' +
                 '<td>' + item.gender + '</td>' +
                 '<td>' + item.age + '</td>' +
+                '<td>' + item.created + '</td>' +
+                '<td>' + item.edited + '</td>' +
                 '<td><button class="removeCustomer btn btn-danger" id=' + item.id + '>Ta bort</button></td>' +
                 '<td><button class="editCustomer btn btn-primary" id=' + item.id + '>Redigera</button></td></tr>'
             );
@@ -175,6 +181,8 @@ function editCustomer(customer) {
     $("#customerForm [name=Gender]").val(customer.gender);
     $("#customerForm [name=Age]").val(customer.age);
     $("#customerForm [name=Id]").val(customer.id);
+    $("#customerForm [name=Created]").val(customer.created);
+
     
     $("#updateCustomer")
         .removeAttr('disabled');   
@@ -188,4 +196,5 @@ function clearCustomerForm() {
     $("#customerForm [name=Gender]").val('Male');
     $("#customerForm [name=Age]").val('');
     $("#customerForm [name=Id]").val('');
+    $("#customerForm [name=Created]").val('');
 }

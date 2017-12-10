@@ -6,7 +6,7 @@ namespace CustomerRegister.Models.Entities
 {
     public partial class Customer
     {
-        public int Id { get; set; }
+        public int Id{ get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -18,5 +18,7 @@ namespace CustomerRegister.Models.Entities
         [Required]
         public int Age { get; set; }
         public bool Updated { get; set; }
+        public DateTime? Created { get; set; }
+        public DateTime? Edited { get; set; }
     }
 }

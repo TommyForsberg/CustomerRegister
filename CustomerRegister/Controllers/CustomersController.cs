@@ -66,6 +66,7 @@ namespace CustomerRegister
             if (!ModelState.IsValid)
                 return BadRequest(customer);
 
+            customer.Created = DateTime.Now;
             databaseContext.Add(customer);
             databaseContext.SaveChanges();
             logger.LogInformation("A customer with name: " +customer.FirstName + " " + customer.LastName + " was added.");
@@ -80,6 +81,7 @@ namespace CustomerRegister
                 return BadRequest(customer);
 
             customer.Updated = true;
+            customer.Edited = DateTime.Now;
             databaseContext.Update(customer);
             databaseContext.SaveChanges();
             logger.LogInformation("Customer with Id "+customer.Id + " was updated.");
@@ -139,7 +141,7 @@ namespace CustomerRegister
                 {
                     var line = streamReader.ReadLine();
                     var data = line.Split(new[] { ',' });
-                    var customer = new Customer() { FirstName = data[1], LastName = data[2], Email = data[3], Gender = data[4], Age = int.Parse(data[5]) };
+                    var customer = new Customer() { FirstName = data[1], LastName = data[2], Email = data[3], Gender = data[4], Age = int.Parse(data[5]), Created = DateTime.Now };
                     databaseContext.Add(customer);
                 }
 
